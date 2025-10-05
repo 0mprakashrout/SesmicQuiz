@@ -1,290 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Seismic Systems Quiz</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Inter", Arial, sans-serif;
-      color: #333;
-      min-height: 100vh;
-      overflow-y: auto;
-      background: linear-gradient(135deg, #f9d423, #ff4e50, #ffe259, #ffa751, #ffb347);
-      background-size: 400% 400%;
-      animation: gradientShift 18s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 60px auto;
-      padding: 24px;
-      border-radius: 20px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 10px 20px;
-      border-radius: 12px;
-      width: 100%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-
-    .question-block {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    .question { 
-      margin-top: 20px; 
-      font-size: 20px; 
-      font-weight: 600; 
-      color: #333; 
-    }
-
-    .choices { 
-      display: flex; 
-      flex-direction: column; 
-      gap: 12px; 
-      margin-top: 16px; 
-      width: 100%; 
-    }
-
-    .choice {
-      padding: 14px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      background: #fff8e1;
-      font-size: 16px;
-      transition: 0.25s ease;
-    }
-
-    .choice:hover {
-      background: #fff3cd;
-      transform: scale(1.03);
-    }
-
-    .choice.selected {
-      background: #ffe57f;
-      border-color: #fdd835;
-    }
-
-    .choice.correct {
-      background: #c8e6c9 !important;
-      border-color: #43a047;
-      color: #1b5e20;
-      font-weight: 600;
-      box-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
-    }
-
-    .choice.incorrect {
-      background: #ffcdd2 !important;
-      border-color: #e53935;
-      color: #b71c1c;
-      font-weight: 600;
-      box-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
-    }
-
-    .explanation {
-      margin-top: 16px;
-      font-size: 15px;
-      text-align: left;
-      background: #fffde7;
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-    }
-
-    .button {
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 16px;
-      transition: 0.25s;
-      background: linear-gradient(to right, #f9d423, #ff4e50);
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-      margin-top: 20px;
-    }
-
-    .button:hover { transform: scale(1.07); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seismic Quiz</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    min-height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f9d423, #ff4e50, #ffe259, #ffa751, #ffb347);
+    background-size: 400% 400%;
+    animation: gradientShift 18s ease infinite;
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .container {
+    max-width: 720px;
+    margin: 60px auto;
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 10px 20px;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .question-block {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .question { margin-top: 20px; font-size: 20px; font-weight: 600; color: #333; }
+  .choices { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; width: 100%; }
+  .choice {
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: #fff8e1;
+    font-size: 16px;
+    transition: 0.25s ease;
+  }
+  .choice:hover { background: #fff3cd; transform: scale(1.03); }
+  .choice.correct { background: #c8e6c9 !important; border-color: #43a047; color: #1b5e20; font-weight: 600; box-shadow: 0 0 10px rgba(67,160,71,0.5); }
+  .choice.incorrect { background: #ffcdd2 !important; border-color: #e53935; color: #b71c1c; font-weight: 600; box-shadow: 0 0 10px rgba(229,57,53,0.5); }
+  .choice.user-clicked-wrong { background: #ffecb3 !important; border-color: #ffb300; color: #5d4037; font-weight: 600; box-shadow: 0 0 8px rgba(255,179,0,0.5); }
+  .explanation { margin-top: 16px; font-size: 15px; text-align: left; background: #fffde7; padding: 12px; border-radius: 8px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
+  .button {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.25s;
+    background: linear-gradient(to right, #f9d423, #ff4e50);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    margin-top: 20px;
+  }
+  .button:hover { transform: scale(1.07); }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h2>Seismic Systems Quiz</h2>
-      <span id="progress">1 / 12</span>
-    </div>
-
-    <div id="quiz" class="question-block"></div>
+<div class="container">
+  <div class="header">
+    <h2>Seismic Quiz</h2>
+    <span id="progress">1 / 12</span>
   </div>
+  <div id="quiz" class="question-block"></div>
+</div>
 
-  <script>
-    const quizData = [
-      {
-        question: "What is Seismic primarily used for?",
-        options: ["Data storage", "Decentralized compute and coordination", "Web hosting", "Social networking"],
-        answer: "Decentralized compute and coordination",
-        explanation: "Seismic enables decentralized coordination and compute across distributed systems."
-      },
-      {
-        question: "What programming language is Seismic built in?",
-        options: ["Rust", "Go", "Python", "Solidity"],
-        answer: "Rust",
-        explanation: "Seismic’s core components are implemented in Rust for performance and safety."
-      },
-      {
-        question: "Which type of protocol is Seismic?",
-        options: ["Layer 1 blockchain", "Layer 2 scaling solution", "Coordination layer", "Storage protocol"],
-        answer: "Coordination layer",
-        explanation: "Seismic acts as a coordination layer that enables interoperability and communication."
-      },
-      {
-        question: "What does Seismic use to manage compute jobs?",
-        options: ["Orchestration Graphs", "Smart Contracts", "Task Tokens", "Command Chains"],
-        answer: "Orchestration Graphs",
-        explanation: "Seismic uses Orchestration Graphs to handle complex multi-agent compute workflows."
-      },
-      {
-        question: "Which of the following best describes 'Nodes' in Seismic?",
-        options: ["Blockchain validators", "Compute executors and coordinators", "Data indexers", "Storage miners"],
-        answer: "Compute executors and coordinators",
-        explanation: "Nodes in Seismic execute tasks and coordinate distributed compute workloads."
-      },
-      {
-        question: "What does 'Seismic SDK' provide?",
-        options: ["Wallet creation", "APIs for integrating compute jobs", "NFT minting", "Transaction validation"],
-        answer: "APIs for integrating compute jobs",
-        explanation: "The Seismic SDK lets developers integrate compute coordination into their apps easily."
-      },
-      {
-        question: "Which consensus type does Seismic use?",
-        options: ["Proof of Work", "Proof of Stake", "Delegated Consensus", "Custom coordination consensus"],
-        answer: "Custom coordination consensus",
-        explanation: "Seismic uses a custom coordination mechanism optimized for compute orchestration."
-      },
-      {
-        question: "What is a key advantage of Seismic?",
-        options: ["High gas fees", "Centralized coordination", "Scalable decentralized compute", "Limited scalability"],
-        answer: "Scalable decentralized compute",
-        explanation: "It provides scalable and efficient coordination across distributed compute networks."
-      },
-      {
-        question: "Which framework powers Seismic workflows?",
-        options: ["FlowGraph", "Orchestration Graph", "TaskFlow", "SeismoGraph"],
-        answer: "Orchestration Graph",
-        explanation: "Seismic’s Orchestration Graph defines how tasks are connected and executed."
-      },
-      {
-        question: "What kind of infrastructure can connect to Seismic?",
-        options: ["Only cloud servers", "Only blockchains", "Any distributed system", "Only local machines"],
-        answer: "Any distributed system",
-        explanation: "Seismic can interconnect cloud, on-chain, or edge infrastructures for compute coordination."
-      },
-      {
-        question: "What kind of applications benefit most from Seismic?",
-        options: ["Gaming apps", "Multi-agent or compute-heavy apps", "Simple static sites", "Photo sharing apps"],
-        answer: "Multi-agent or compute-heavy apps",
-        explanation: "Apps requiring parallel or complex coordination benefit the most from Seismic’s model."
-      },
-      {
-        question: "Where can you learn more about Seismic?",
-        options: ["Twitter", "Seismic Docs", "GitHub", "Medium"],
-        answer: "Seismic Docs",
-        explanation: "Seismic’s official docs provide all developer and protocol details."
-      }
-    ];
+<script>
+const quizData = [
+  { question: "What is Seismic primarily used for?", options: ["Data storage","Decentralized compute and coordination","Web hosting","Social networking"], answer: "Decentralized compute and coordination", explanation: "Seismic enables decentralized coordination and compute across distributed systems." },
+  { question: "What programming language is Seismic built in?", options: ["Rust","Go","Python","Solidity"], answer: "Rust", explanation: "Seismic’s core components are implemented in Rust for performance and safety." },
+  { question: "Which type of protocol is Seismic?", options: ["Layer 1 blockchain","Layer 2 scaling solution","Coordination layer","Storage protocol"], answer: "Coordination layer", explanation: "Seismic acts as a coordination layer that enables interoperability and communication." },
+  { question: "What does Seismic use to manage compute jobs?", options: ["Orchestration Graphs","Smart Contracts","Task Tokens","Command Chains"], answer: "Orchestration Graphs", explanation: "Seismic uses Orchestration Graphs to handle complex multi-agent compute workflows." },
+  { question: "Which of the following best describes 'Nodes' in Seismic?", options: ["Blockchain validators","Compute executors and coordinators","Data indexers","Storage miners"], answer: "Compute executors and coordinators", explanation: "Nodes in Seismic execute tasks and coordinate distributed compute workloads." },
+  { question: "What does 'Seismic SDK' provide?", options: ["Wallet creation","APIs for integrating compute jobs","NFT minting","Transaction validation"], answer: "APIs for integrating compute jobs", explanation: "The Seismic SDK lets developers integrate compute coordination into their apps easily." },
+  { question: "Which consensus type does Seismic use?", options: ["Proof of Work","Proof of Stake","Delegated Consensus","Custom coordination consensus"], answer: "Custom coordination consensus", explanation: "Seismic uses a custom coordination mechanism optimized for compute orchestration." },
+  { question: "What is a key advantage of Seismic?", options: ["High gas fees","Centralized coordination","Scalable decentralized compute","Limited scalability"], answer: "Scalable decentralized compute", explanation: "It provides scalable and efficient coordination across distributed compute networks." },
+  { question: "Which framework powers Seismic workflows?", options: ["FlowGraph","Orchestration Graph","TaskFlow","SeismoGraph"], answer: "Orchestration Graph", explanation: "Seismic’s Orchestration Graph defines how tasks are connected and executed." },
+  { question: "What kind of infrastructure can connect to Seismic?", options: ["Only cloud servers","Only blockchains","Any distributed system","Only local machines"], answer: "Any distributed system", explanation: "Seismic can interconnect cloud, on-chain, or edge infrastructures for compute coordination." },
+  { question: "What kind of applications benefit most from Seismic?", options: ["Gaming apps","Multi-agent or compute-heavy apps","Simple static sites","Photo sharing apps"], answer: "Multi-agent or compute-heavy apps", explanation: "Apps requiring parallel or complex coordination benefit the most from Seismic’s model." },
+  { question: "Where can you learn more about Seismic?", options: ["Twitter","Seismic Docs","GitHub","Medium"], answer: "Seismic Docs", explanation: "Seismic’s official docs provide all developer and protocol details." }
+];
 
-    let current = 0;
-    const quiz = document.getElementById("quiz");
-    const progress = document.getElementById("progress");
+let current = 0;
+const quiz = document.getElementById("quiz");
+const progress = document.getElementById("progress");
 
-    function loadQuestion() {
-      const q = quizData[current];
-      quiz.innerHTML = `
-        <div class="question">${q.question}</div>
-        <div class="choices">
-          ${q.options.map(o => `<div class="choice">${o}</div>`).join("")}
-        </div>
-      `;
-      progress.textContent = `${current + 1} / ${quizData.length}`;
+function loadQuestion() {
+  const q = quizData[current];
+  quiz.innerHTML = `
+    <div class="question">${q.question}</div>
+    <div class="choices">
+      ${q.options.map(o => `<div class="choice">${o}</div>`).join("")}
+    </div>
+  `;
+  progress.textContent = `${current+1} / ${quizData.length}`;
 
-      const choices = document.querySelectorAll(".choice");
-      choices.forEach(choice => {
-        choice.addEventListener("click", () => handleChoice(choice, q.answer, q.explanation));
-      });
-    }
+  const choices = document.querySelectorAll(".choice");
+  choices.forEach(choice => {
+    choice.addEventListener("click", () => handleChoice(choice, q.answer, q.explanation));
+  });
+}
 
-    function handleChoice(choice, correctAnswer, explanation) {
-      const allChoices = document.querySelectorAll(".choice");
-      allChoices.forEach(c => c.classList.remove("selected"));
-      choice.classList.add("selected");
+function handleChoice(choice, correctAnswer, explanation) {
+  const allChoices = document.querySelectorAll(".choice");
+  allChoices.forEach(c => c.style.pointerEvents = "none"); // disable all
 
-      allChoices.forEach(c => {
-        c.classList.add(c.textContent === correctAnswer ? "correct" : "incorrect");
-        c.style.pointerEvents = "none";
-      });
+  if (choice.textContent === correctAnswer) {
+    choice.classList.add("correct"); // clicked correct
+  } else {
+    choice.classList.add("user-clicked-wrong"); // clicked wrong
+    allChoices.forEach(c => {
+      if (c.textContent === correctAnswer) c.classList.add("correct"); // show correct answer
+    });
+  }
 
-      const expDiv = document.createElement("div");
-      expDiv.classList.add("explanation");
-      expDiv.textContent = explanation;
-      quiz.appendChild(expDiv);
+  // show explanation
+  const expDiv = document.createElement("div");
+  expDiv.classList.add("explanation");
+  expDiv.textContent = explanation;
+  quiz.appendChild(expDiv);
 
-      const nextBtn = document.createElement("button");
-      nextBtn.classList.add("button");
-      nextBtn.textContent = current === quizData.length - 1 ? "Finish" : "Next";
-      quiz.appendChild(nextBtn);
+  // Next button
+  const nextBtn = document.createElement("button");
+  nextBtn.classList.add("button");
+  nextBtn.textContent = current === quizData.length -1 ? "Finish" : "Next";
+  quiz.appendChild(nextBtn);
+  nextBtn.scrollIntoView({behavior:"smooth", block:"center"});
 
-      nextBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+  nextBtn.addEventListener("click", () => {
+    current++;
+    if(current < quizData.length) loadQuestion();
+    else showResult();
+  });
+}
 
-      nextBtn.addEventListener("click", () => {
-        current++;
-        if (current < quizData.length) loadQuestion();
-        else showResult();
-      });
-    }
+function showResult() {
+  quiz.innerHTML = `
+    <h2>🎉 Quiz Complete!</h2>
+    <p>You’ve finished all ${quizData.length} questions.</p>
+    <button class="button" onclick="restartQuiz()">Restart</button>
+  `;
+}
 
-    function showResult() {
-      quiz.innerHTML = `
-        <h2>🎉 Quiz Complete!</h2>
-        <p>You’ve finished all ${quizData.length} questions.</p>
-        <button class="button" onclick="restartQuiz()">Restart</button>
-      `;
-    }
+function restartQuiz() {
+  current = 0;
+  loadQuestion();
+}
 
-    function restartQuiz() {
-      current = 0;
-      loadQuestion();
-    }
-
-    loadQuestion();
-  </script>
+loadQuestion();
+</script>
 </body>
 </html>
