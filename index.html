@@ -33,6 +33,22 @@
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
   }
+  h1, h2, p { text-align: center; }
+  .button {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
+    transition: 0.25s;
+    background: linear-gradient(to right, #f9d423, #ff4e50);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    margin-top: 20px;
+  }
+  .button:hover { transform: scale(1.07); }
+  #quiz { display: none; width: 100%; }
   .header {
     display: flex;
     justify-content: space-between;
@@ -69,29 +85,21 @@
   .choice.incorrect { background: #ffcdd2 !important; border-color: #e53935; color: #b71c1c; font-weight: 600; box-shadow: 0 0 10px rgba(229,57,53,0.5); }
   .choice.user-clicked-wrong { background: #ffecb3 !important; border-color: #ffb300; color: #5d4037; font-weight: 600; box-shadow: 0 0 8px rgba(255,179,0,0.5); }
   .explanation { margin-top: 16px; font-size: 15px; text-align: left; background: #fffde7; padding: 12px; border-radius: 8px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-  .button {
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 16px;
-    transition: 0.25s;
-    background: linear-gradient(to right, #f9d423, #ff4e50);
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    margin-top: 20px;
-  }
-  .button:hover { transform: scale(1.07); }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="intro">
+  <h1>Welcome to Seismic Quiz</h1>
+  <h2>Discover Seismic</h2>
+  <p>Seismic is a coordination layer for decentralized and private compute across distributed systems. It enables encrypted smart contracts, orchestrated tasks, and multi-agent compute while maintaining security and privacy.</p>
+  <button class="button" onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<div class="container" id="quiz">
   <div class="header">
     <h2>Seismic Quiz</h2>
     <span id="progress">1 / 12</span>
   </div>
-  <div id="quiz" class="question-block"></div>
 </div>
 
 <script>
@@ -111,19 +119,30 @@ const quizData = [
 ];
 
 let current = 0;
-const quiz = document.getElementById("quiz");
+const quizContainer = document.getElementById("quiz");
+const intro = document.getElementById("intro");
 const progress = document.getElementById("progress");
+
+function startQuiz() {
+  intro.style.display = "none";
+  quizContainer.style.display = "block";
+  loadQuestion();
+}
 
 function loadQuestion() {
   const q = quizData[current];
-  quiz.innerHTML = `
-    <div class="question">${q.question}</div>
-    <div class="choices">
-      ${q.options.map(o => `<div class="choice">${o}</div>`).join("")}
+  quizContainer.innerHTML = `
+    <div class="header">
+      <h2>Seismic Quiz</h2>
+      <span id="progress">${current+1} / ${quizData.length}</span>
+    </div>
+    <div class="question-block">
+      <div class="question">${q.question}</div>
+      <div class="choices">
+        ${q.options.map(o => `<div class="choice">${o}</div>`).join("")}
+      </div>
     </div>
   `;
-  progress.textContent = `${current+1} / ${quizData.length}`;
-
   const choices = document.querySelectorAll(".choice");
   choices.forEach(choice => {
     choice.addEventListener("click", () => handleChoice(choice, q.answer, q.explanation));
@@ -132,28 +151,26 @@ function loadQuestion() {
 
 function handleChoice(choice, correctAnswer, explanation) {
   const allChoices = document.querySelectorAll(".choice");
-  allChoices.forEach(c => c.style.pointerEvents = "none"); // disable all
+  allChoices.forEach(c => c.style.pointerEvents = "none");
 
   if (choice.textContent === correctAnswer) {
-    choice.classList.add("correct"); // clicked correct
+    choice.classList.add("correct");
   } else {
-    choice.classList.add("user-clicked-wrong"); // clicked wrong
+    choice.classList.add("user-clicked-wrong");
     allChoices.forEach(c => {
-      if (c.textContent === correctAnswer) c.classList.add("correct"); // show correct answer
+      if (c.textContent === correctAnswer) c.classList.add("correct");
     });
   }
 
-  // show explanation
   const expDiv = document.createElement("div");
   expDiv.classList.add("explanation");
   expDiv.textContent = explanation;
-  quiz.appendChild(expDiv);
+  quizContainer.appendChild(expDiv);
 
-  // Next button
   const nextBtn = document.createElement("button");
   nextBtn.classList.add("button");
-  nextBtn.textContent = current === quizData.length -1 ? "Finish" : "Next";
-  quiz.appendChild(nextBtn);
+  nextBtn.textContent = current === quizData.length-1 ? "Finish" : "Next";
+  quizContainer.appendChild(nextBtn);
   nextBtn.scrollIntoView({behavior:"smooth", block:"center"});
 
   nextBtn.addEventListener("click", () => {
@@ -164,7 +181,7 @@ function handleChoice(choice, correctAnswer, explanation) {
 }
 
 function showResult() {
-  quiz.innerHTML = `
+  quizContainer.innerHTML = `
     <h2>🎉 Quiz Complete!</h2>
     <p>You’ve finished all ${quizData.length} questions.</p>
     <button class="button" onclick="restartQuiz()">Restart</button>
@@ -173,10 +190,8 @@ function showResult() {
 
 function restartQuiz() {
   current = 0;
-  loadQuestion();
+  startQuiz();
 }
-
-loadQuestion();
 </script>
 </body>
 </html>
