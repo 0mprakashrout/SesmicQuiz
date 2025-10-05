@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Seismic Quiz</title>
+  <title>Seismic Systems Quiz</title>
   <style>
     body {
       margin: 0;
@@ -11,10 +11,10 @@
       font-family: "Inter", Arial, sans-serif;
       color: #333;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
-    /* Animated multi-color gradient background */
+    /* Animated gradient background */
     body::before {
       content: "";
       position: fixed;
@@ -32,16 +32,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Floating white particles overlay */
-    #particles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
     .container {
       max-width: 720px;
       margin: 60px auto;
@@ -55,17 +45,7 @@
       backdrop-filter: blur(10px);
     }
 
-    .start-screen, .question-block {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 40px;
-      border-radius: 16px;
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    .header, .footer {
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -75,7 +55,16 @@
       border-radius: 12px;
       width: 100%;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      backdrop-filter: blur(6px);
+    }
+
+    .question-block {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     .question { margin-top: 20px; font-size: 20px; font-weight: 600; color: #333; }
@@ -90,6 +79,7 @@
       font-size: 16px;
       transition: 0.2s;
     }
+
     .choice:hover { background: #ffeaa7; transform: scale(1.03); }
     .choice.selected { background: #fdd835; border-color: #fbc02d; }
     .choice.correct { background: #aeea00; border-color: #64dd17; color: #333; font-weight: 600; }
@@ -105,7 +95,7 @@
       box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
     }
 
-    .button, .small-button {
+    .button {
       padding: 10px 16px;
       border-radius: 10px;
       border: none;
@@ -113,165 +103,165 @@
       font-weight: 600;
       font-size: 16px;
       transition: 0.25s;
-    }
-
-    .button {
       background: linear-gradient(to right, #f9d423, #ff4e50);
       color: #fff;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      margin-top: 20px;
     }
 
     .button:hover { transform: scale(1.07); }
-    .small-button { background: #fff3b0; border: 1px solid #f7d97c; color: #333; }
-
   </style>
 </head>
 <body>
-  <canvas id="particles"></canvas>
-
-  <div class="container" id="app">
-    <div class="start-screen" id="start-screen">
-      <h1>Seismic Quiz</h1>
-      <p>Test Your Knowledge</p>
-      <h2>Welcome to QuizMaster!</h2>
-      <p>Test your knowledge of Seismic, encrypted smart contracts, and protocol-level privacy. You'll get instant feedback and see your final score at the end.</p>
-      <button class="button" onclick="startQuiz()">Start Quiz</button>
+  <div class="container">
+    <div class="header">
+      <h2>Seismic Systems Quiz</h2>
+      <span id="progress">1 / 12</span>
     </div>
+
+    <div id="quiz" class="question-block"></div>
   </div>
 
   <script>
-    /* Particle animation */
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    let particlesArray = [];
-    let mouse = { x: null, y: null };
-
-    window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-
-    function initParticles() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      particlesArray = [];
-      const numberOfParticles = 70;
-      for (let i = 0; i < numberOfParticles; i++) {
-        particlesArray.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 4 + 1,
-          speedX: (Math.random() - 0.5) * 1,
-          speedY: (Math.random() - 0.5) * 1
-        });
+    const quizData = [
+      {
+        question: "What is Seismic primarily used for?",
+        options: ["Data storage", "Decentralized compute and coordination", "Web hosting", "Social networking"],
+        answer: "Decentralized compute and coordination",
+        explanation: "Seismic enables decentralized coordination and compute across distributed systems."
+      },
+      {
+        question: "What programming language is Seismic built in?",
+        options: ["Rust", "Go", "Python", "Solidity"],
+        answer: "Rust",
+        explanation: "Seismic’s core components are implemented in Rust for performance and safety."
+      },
+      {
+        question: "Which type of protocol is Seismic?",
+        options: ["Layer 1 blockchain", "Layer 2 scaling solution", "Coordination layer", "Storage protocol"],
+        answer: "Coordination layer",
+        explanation: "Seismic acts as a coordination layer that enables interoperability and communication."
+      },
+      {
+        question: "What does Seismic use to manage compute jobs?",
+        options: ["Orchestration Graphs", "Smart Contracts", "Task Tokens", "Command Chains"],
+        answer: "Orchestration Graphs",
+        explanation: "Seismic uses Orchestration Graphs to handle complex multi-agent compute workflows."
+      },
+      {
+        question: "Which of the following best describes 'Nodes' in Seismic?",
+        options: ["Blockchain validators", "Compute executors and coordinators", "Data indexers", "Storage miners"],
+        answer: "Compute executors and coordinators",
+        explanation: "Nodes in Seismic execute tasks and coordinate distributed compute workloads."
+      },
+      {
+        question: "What does 'Seismic SDK' provide?",
+        options: ["Wallet creation", "APIs for integrating compute jobs", "NFT minting", "Transaction validation"],
+        answer: "APIs for integrating compute jobs",
+        explanation: "The Seismic SDK lets developers integrate compute coordination into their apps easily."
+      },
+      {
+        question: "Which consensus type does Seismic use?",
+        options: ["Proof of Work", "Proof of Stake", "Delegated Consensus", "Custom coordination consensus"],
+        answer: "Custom coordination consensus",
+        explanation: "Seismic uses a custom coordination mechanism optimized for compute orchestration."
+      },
+      {
+        question: "What is a key advantage of Seismic?",
+        options: ["High gas fees", "Centralized coordination", "Scalable decentralized compute", "Limited scalability"],
+        answer: "Scalable decentralized compute",
+        explanation: "It provides scalable and efficient coordination across distributed compute networks."
+      },
+      {
+        question: "Which framework powers Seismic workflows?",
+        options: ["FlowGraph", "Orchestration Graph", "TaskFlow", "SeismoGraph"],
+        answer: "Orchestration Graph",
+        explanation: "Seismic’s Orchestration Graph defines how tasks are connected and executed."
+      },
+      {
+        question: "What kind of infrastructure can connect to Seismic?",
+        options: ["Only cloud servers", "Only blockchains", "Any distributed system", "Only local machines"],
+        answer: "Any distributed system",
+        explanation: "Seismic can interconnect cloud, on-chain, or edge infrastructures for compute coordination."
+      },
+      {
+        question: "What kind of applications benefit most from Seismic?",
+        options: ["Gaming apps", "Multi-agent or compute-heavy apps", "Simple static sites", "Photo sharing apps"],
+        answer: "Multi-agent or compute-heavy apps",
+        explanation: "Apps requiring parallel or complex coordination benefit the most from Seismic’s model."
+      },
+      {
+        question: "Where can you learn more about Seismic?",
+        options: ["Twitter", "Seismic Docs", "GitHub", "Medium"],
+        answer: "Seismic Docs",
+        explanation: "Seismic’s official docs provide all developer and protocol details."
       }
-    }
-
-    function animateParticles() {
-      ctx.clearRect(0,0,canvas.width, canvas.height);
-      particlesArray.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.fill();
-
-        if(mouse.x && mouse.y){
-          let dx = mouse.x - p.x;
-          let dy = mouse.y - p.y;
-          let distance = Math.sqrt(dx*dx + dy*dy);
-          if(distance < 100){
-            p.x -= dx/30;
-            p.y -= dy/30;
-          }
-        }
-
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        if(p.x < 0 || p.x > canvas.width) p.speedX = -p.speedX;
-        if(p.y < 0 || p.y > canvas.height) p.speedY = -p.speedY;
-      });
-      requestAnimationFrame(animateParticles);
-    }
-
-    window.addEventListener('resize', initParticles);
-    initParticles();
-    animateParticles();
-
-    /* Seismic Quiz Questions */
-    const QUESTIONS = [
-      { q:"What is Seismic?", choices:["A layer-2 scaling solution for Ethereum","A privacy-focused layer-1 blockchain","A decentralized exchange protocol","A stablecoin issuer"], answer:1, explanation:"Seismic is a Layer 1 blockchain capable of encrypting arbitrary smart contracts."},
-      { q:"Which of these architectural features does Seismic provide?", choices:["Encrypted global state","Encrypted memory access","Encrypted orchestration of contract logic","All of the above"], answer:3, explanation:"Seismic supports all three: encrypted global state, encrypted memory access, and encrypted orchestration."},
-      { q:"How does Seismic allow existing EVM contracts to become private?", choices:["By rewriting contracts in a new language","Through minimal changes to the original Solidity contract","By requiring a zero-knowledge proof for each contract","By using an off-chain privacy layer"], answer:1, explanation:"You can deploy a single Solidity contract with minimal changes to make it private."},
-      { q:"Seismic adapts the existing blockchain stack around what technology?", choices:["Zero-knowledge circuits","Secure hardware / TEEs","Homomorphic encryption","Off-chain state channels"], answer:1, explanation:"Seismic restructures the blockchain stack around secure hardware / TEEs (trusted execution environments)."},
-      { q:"What is Seismic Reth?", choices:["A user wallet for Seismic","A consensus algorithm","A client extending Reth with shielded transaction and storage capabilities","A governance module"], answer:2, explanation:"Seismic Reth extends Reth to support shielded transactions and storage."},
-      { q:"Seismic divides memory or state into which regions?", choices:["Public and private","Layer-1 and Layer-2","Transparent and encrypted","Hot and cold storage"], answer:2, explanation:"Seismic clones major memory segments into transparent vs encrypted regions."},
-      { q:"Which use case is enabled by Seismic’s privacy architecture?", choices:["Blind auctions","Public voting","Simple token transfers only","Off-chain gaming"], answer:0, explanation:"Seismic enables privacy use cases like blind auctions through encrypted memory access."},
-      { q:"Which investment firm led Seismic’s seed round?", choices:["Polychain Capital","Galaxy Digital","a16z Crypto","Electric Capital"], answer:2, explanation:"a16z Crypto led Seismic’s $7M seed round."},
-      { q:"Why is encryption at the protocol level preferred by Seismic?", choices:["It’s easier to develop","Wallet-level encryption can’t enable composability","To enable composable privacy across protocols","To reduce transaction fees"], answer:2, explanation:"Protocol-level encryption allows privacy to remain composable across apps and chains."},
-      { q:"What does “encrypted orchestration” mean in Seismic?", choices:["Off-chain orchestration","Splitting logic between environments","Keeping contract logic within a single VM without exposing intermediate data","Layering multiple encryption schemes"], answer:2, explanation:"Encrypted orchestration means keeping logic in a single VM that controls encrypted and transparent operations together."},
-      { q:"Which repository contains Seismic’s client library?", choices:["seismic-reth","seismic-client","seismic-solidity","seismic-evm"], answer:1, explanation:"The TypeScript client is found in the 'seismic-client' repository."},
-      { q:"What core benefit does Seismic unlock?", choices:["Fully transparent state","Elimination of smart contracts","Private interactions across multiple users without revealing data","Only token transfers"], answer:2, explanation:"Seismic enables private interactions across users and contracts without exposing data or state."}
     ];
 
-    let index=0, score=0, selected=null;
-    const app=document.getElementById("app");
+    let current = 0;
+    const quiz = document.getElementById("quiz");
+    const progress = document.getElementById("progress");
 
-    function startQuiz() {
-      index=0; score=0; selected=null;
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const current=QUESTIONS[index];
-      app.innerHTML=`
-        <div class="header">
-          <h1>Seismic Quiz</h1>
-          <div>Question ${index+1}/${QUESTIONS.length}</div>
-        </div>
-        <div class="question-block">
-          <div class="question">${current.q}</div>
-          <div class="choices">
-            ${current.choices.map((c,i)=>`<div class="choice" onclick="selectChoice(${i})" id="choice-${i}">${c}</div>`).join('')}
-          </div>
-          <div id="explanation" class="explanation" style="display:none;"></div>
-        </div>
-        <div class="footer">
-          <button class="small-button" onclick="startQuiz()">Restart</button>
-          <button class="button" onclick="nextQuestion()">Next</button>
+    function loadQuestion() {
+      const q = quizData[current];
+      quiz.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="choices">
+          ${q.options.map(o => `<div class="choice">${o}</div>`).join("")}
         </div>
       `;
-    }
+      progress.textContent = `${current + 1} / ${quizData.length}`;
 
-    function selectChoice(i){
-      if(selected!==null) return;
-      selected=i;
-      const current=QUESTIONS[index];
-      current.choices.forEach((_,j)=>{
-        const el=document.getElementById(`choice-${j}`);
-        if(j===current.answer){ el.classList.add('correct'); }
-        else if(j===i){ el.classList.add('incorrect'); }
-        if(j===i) el.classList.add('selected');
+      const choices = document.querySelectorAll(".choice");
+      choices.forEach(choice => {
+        choice.addEventListener("click", () => handleChoice(choice, q.answer, q.explanation));
       });
-      if(i===current.answer) score++;
-      const exp=document.getElementById("explanation");
-      exp.innerText=current.explanation;
-      exp.style.display="block";
     }
 
-    function nextQuestion(){
-      if(selected===null) return;
-      selected=null; index++;
-      if(index>=QUESTIONS.length) renderResult();
-      else renderQuestion();
+    function handleChoice(choice, correctAnswer, explanation) {
+      const allChoices = document.querySelectorAll(".choice");
+      allChoices.forEach(c => c.classList.remove("selected"));
+      choice.classList.add("selected");
+
+      allChoices.forEach(c => {
+        c.classList.add(c.textContent === correctAnswer ? "correct" : "incorrect");
+        c.style.pointerEvents = "none";
+      });
+
+      const expDiv = document.createElement("div");
+      expDiv.classList.add("explanation");
+      expDiv.textContent = explanation;
+      quiz.appendChild(expDiv);
+
+      const nextBtn = document.createElement("button");
+      nextBtn.classList.add("button");
+      nextBtn.textContent = current === quizData.length - 1 ? "Finish" : "Next";
+      quiz.appendChild(nextBtn);
+
+      // Scroll into view fix
+      nextBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      nextBtn.addEventListener("click", () => {
+        current++;
+        if (current < quizData.length) loadQuestion();
+        else showResult();
+      });
     }
 
-    function renderResult(){
-      app.innerHTML=`
-        <div class="start-screen">
-          <h2>Your score: ${score}/${QUESTIONS.length}</h2>
-          <p>${score===QUESTIONS.length ? 'Perfect! Great job.' : 'Nice effort — try again to improve.'}</p>
-          <button class="button" onclick="startQuiz()">Play again</button>
-        </div>
+    function showResult() {
+      quiz.innerHTML = `
+        <h2>🎉 Quiz Complete!</h2>
+        <p>You’ve finished all ${quizData.length} questions.</p>
+        <button class="button" onclick="restartQuiz()">Restart</button>
       `;
     }
+
+    function restartQuiz() {
+      current = 0;
+      loadQuestion();
+    }
+
+    loadQuestion();
   </script>
 </body>
 </html>
