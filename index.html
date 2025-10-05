@@ -12,18 +12,9 @@
       color: #333;
       min-height: 100vh;
       overflow-y: auto;
-    }
-
-    /* Animated gradient background */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
       background: linear-gradient(135deg, #f9d423, #ff4e50, #ffe259, #ffa751, #ffb347);
       background-size: 400% 400%;
       animation: gradientShift 18s ease infinite;
-      z-index: -2;
     }
 
     @keyframes gradientShift {
@@ -85,36 +76,37 @@
     .choice {
       padding: 14px;
       border-radius: 10px;
-      border: 1px solid #ffd166;
+      border: 2px solid transparent;
       cursor: pointer;
       background: #fff8e1;
       font-size: 16px;
-      transition: 0.3s;
+      transition: 0.25s ease;
     }
 
-    .choice:hover { 
-      background: #ffeaa7; 
-      transform: scale(1.03); 
+    .choice:hover {
+      background: #fff3cd;
+      transform: scale(1.03);
     }
 
-    .choice.selected { 
-      background: #fdd835; 
-      border-color: #fbc02d; 
-      transform: scale(1.05);
+    .choice.selected {
+      background: #ffe57f;
+      border-color: #fdd835;
     }
 
-    .choice.correct { 
-      background: #4CAF50 !important; 
-      color: #fff; 
-      border-color: #388E3C;
-      transform: scale(1.05);
+    .choice.correct {
+      background: #c8e6c9 !important;
+      border-color: #43a047;
+      color: #1b5e20;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
     }
 
-    .choice.incorrect { 
-      background: #F44336 !important; 
-      color: #fff; 
-      border-color: #D32F2F;
-      transform: scale(1.05);
+    .choice.incorrect {
+      background: #ffcdd2 !important;
+      border-color: #e53935;
+      color: #b71c1c;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
     }
 
     .explanation {
@@ -270,7 +262,6 @@
       nextBtn.textContent = current === quizData.length - 1 ? "Finish" : "Next";
       quiz.appendChild(nextBtn);
 
-      // Scroll into view fix
       nextBtn.scrollIntoView({ behavior: "smooth", block: "center" });
 
       nextBtn.addEventListener("click", () => {
